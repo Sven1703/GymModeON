@@ -34,10 +34,16 @@ application.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle
 # Telegram Webhook-Route
 @app.post("/webhook")
 async def telegram_webhook(request: Request):
-    json_update = await request.json()
-    update = Update.de_json(json_update, application.bot)
-    await application.update_queue.put(update)
-    return Response(status_code=200)
+    try:
+        json_update = await request.json()
+        print("Webhook hat Update erhalten:", json_update)  # <-- Hier das Debug-Log
+        update = Update.de_json(json_update, application.bot)
+        await application.update_queue.put(update)
+        return Response(status_code=200)
+    except Exception as e:
+        print("Fehler im Webhook:", e)
+        return Response(status_code=500)
+
 
 # Funktion zum Setzen des Webhooks bei Telegram
 async def set_webhook():
