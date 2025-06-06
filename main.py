@@ -20,11 +20,12 @@ class Handler(BaseHTTPRequestHandler):
         if self.path == '/':
             self.send_response(200)
             self.end_headers()
-            self.wfile.write(b'Bot ist online!')
+            self.wfile.write('Bot ist online! ✅'.encode('utf-8'))
         else:
             self.send_response(404)
             self.end_headers()
-            self.wfile.write(b'Not Found')
+            self.wfile.write('Not Found'.encode('utf-8'))
+
 
 
 def run_webserver():
