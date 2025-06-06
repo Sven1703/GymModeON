@@ -21,17 +21,15 @@ async def head_root():
 # Telegram Bot Setup (async)
 application = ApplicationBuilder().token(BOT_TOKEN).build()
 
+# Handler definieren
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("👋 Willkommen! Sende mir 'vip' per privater Nachricht, um deinen Link zu erhalten.")
+    await update.message.reply_text("👋 Willkommen! Sende mir 'vip', um den Link zu erhalten.")
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.message.chat.type == 'private' and update.message.text.lower() == 'vip':
         await update.message.reply_text(f"🔗 Dein VIP-Link: {VIP_LINK}")
 
-application.add_handler(CommandHandler("start", start))
-application.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message))
-from telegram.ext import CommandHandler
-
+# NEU: Webhookinfo-Handler
 async def webhookinfo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     webhook_info = await context.bot.get_webhook_info()
     msg = (
@@ -41,7 +39,11 @@ async def webhookinfo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     await update.message.reply_text(msg)
 
-application.add_handler(CommandHandler("webhookinfo", webhookinfo))
+# Handler registrieren
+application.add_handler(CommandHandler("start", start))
+application.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message))
+application.add_handler(CommandHandler("webhookinfo", webhookinfo))  # <-- NEU
+
 
 
 # Telegram Webhook-Route
