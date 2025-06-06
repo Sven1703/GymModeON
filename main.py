@@ -14,6 +14,10 @@ app = FastAPI()
 async def root():
     return {"status": "Bot ist online! ✅"}
 
+@app.head("/")
+async def head_root():
+    return Response(status_code=200)
+
 # Telegram Bot Setup (async)
 application = ApplicationBuilder().token(BOT_TOKEN).build()
 
