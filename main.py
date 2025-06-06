@@ -9,6 +9,11 @@ VIP_LINK = "https://www.checkout-ds24.com/redir/613899/Sven1703/"
 
 app = FastAPI()
 
+@app.get("/")
+async def root():
+    return {"status": "Bot ist online! ✅"}
+
+
 # Telegram Bot Setup (async)
 application = ApplicationBuilder().token(BOT_TOKEN).build()
 
