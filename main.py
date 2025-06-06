@@ -30,6 +30,19 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 application.add_handler(CommandHandler("start", start))
 application.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message))
+from telegram.ext import CommandHandler
+
+async def webhookinfo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    webhook_info = await context.bot.get_webhook_info()
+    msg = (
+        f"🌐 Webhook-URL: {webhook_info.url or 'Nicht gesetzt'}\n"
+        f"📩 Ausstehende Updates: {webhook_info.pending_update_count}\n"
+        f"⚠️ Letzte Fehlermeldung: {webhook_info.last_error_message or 'Keine'}"
+    )
+    await update.message.reply_text(msg)
+
+application.add_handler(CommandHandler("webhookinfo", webhookinfo))
+
 
 # Telegram Webhook-Route
 @app.post("/webhook")
