@@ -1,7 +1,7 @@
 import os
 import uvicorn
 from fastapi import FastAPI, Request, Response
-from telegram import Update, Bot
+from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
 
 BOT_TOKEN = "7909705556:AAG64O0ugaFSjUFpmh3oYvB55s3zcDQyfbk"
@@ -9,10 +9,10 @@ VIP_LINK = "https://www.checkout-ds24.com/redir/613899/Sven1703/"
 
 app = FastAPI()
 
+# Root-Route für Statuschecks (GET & HEAD)
 @app.get("/")
 async def root():
     return {"status": "Bot ist online! ✅"}
-
 
 # Telegram Bot Setup (async)
 application = ApplicationBuilder().token(BOT_TOKEN).build()
@@ -26,11 +26,6 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 application.add_handler(CommandHandler("start", start))
 application.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message))
-
-# Root-Route für UptimeRobot
-@app.get("/")
-async def root():
-    return {"status": "Bot ist online! ✅"}
 
 # Telegram Webhook-Route
 @app.post("/webhook")
@@ -60,11 +55,8 @@ if __name__ == "__main__":
         await application.stop()
         await application.shutdown()
 
-    # Starte FastAPI Server UND Bot Async
     async def main():
-        # Starte Bot im Hintergrund
         asyncio.create_task(startup())
-        # Starte FastAPI Webserver (uvicorn)
         config = uvicorn.Config("main:app", host="0.0.0.0", port=int(os.environ.get("PORT", 8000)), log_level="info")
         server = uvicorn.Server(config)
         await server.serve()
