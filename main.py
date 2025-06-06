@@ -4,7 +4,7 @@ from fastapi import FastAPI, Request, Response
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
 
-BOT_TOKEN = "7909705556:AAG6400ugaFSjUFpmh3oYvB55s3zcDQyfbk"
+BOT_TOKEN = "7909705556:AAHUMqkFFSYz6LktMXmBBmUf532DUxCro44"
 VIP_LINK = "https://www.checkout-ds24.com/redir/613899/Sven1703/"
 
 app = FastAPI()
