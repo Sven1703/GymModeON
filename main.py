@@ -2,7 +2,7 @@ import os
 import threading
 import asyncio
 from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
+from telegram.ext import Application, ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 BOT_TOKEN = "7909705556:AAG64O0ugaFSjUFpmh3oYvB55s3zcDQyfbk"
@@ -36,17 +36,20 @@ async def main():
     webhook_path = "/webhook"
     webhook_url = f"{domain}{webhook_path}"
 
+    # Application erstellen UND initialisieren
     app = ApplicationBuilder().token(BOT_TOKEN).build()
+
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message))
 
     print(f"🌐 Setze Webhook auf: {webhook_url}")
+    await app.initialize()       # WICHTIG: Application initialisieren
     await app.bot.set_webhook(webhook_url)
 
-    # Starte den Webserver für UptimeRobot im Hintergrund
+    # Webserver starten (für UptimeRobot)
     threading.Thread(target=run_webserver, daemon=True).start()
 
-    # Starte den Telegram-Webserver für den Webhook
+    # Telegram Webhook starten
     await app.start()
     await app.updater.start_webhook(
         listen="0.0.0.0",
