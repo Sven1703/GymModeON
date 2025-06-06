@@ -2,7 +2,7 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTypes, CommandHandler
 
 # Dein Bot-Token und der VIP-Link
-BOT_TOKEN = "7909705556:AAG6400ugaFSjUFpmh3oYvB55s3zcDQyfbk"
+BOT_TOKEN = "7909705556:AAG64O0ugaFSjUFpmh3oYvB55s3zcDQyfbk"
 VIP_LINK = "https://www.checkout-ds24.com/redir/613899/Sven1703/"
 
 # Reaktion auf /start
