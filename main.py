@@ -17,9 +17,15 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # Minimaler Webserver, der nichts macht, nur den Port offen hält
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        self.send_response(200)
-        self.end_headers()
-        self.wfile.write(b'OK')
+        if self.path == '/':
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b'Bot ist online! ✅')
+        else:
+            self.send_response(404)
+            self.end_headers()
+            self.wfile.write(b'Not Found')
+
 
 def run_webserver():
     port = int(os.environ.get("PORT", 8000))
