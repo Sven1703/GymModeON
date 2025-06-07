@@ -1,9 +1,7 @@
-
 import os
 import logging
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, jsonify
 import requests
-import json
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
@@ -13,10 +11,13 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", "fallback_secret_key")
 
-# Bot-Konfiguration
-BOT_TOKEN = "7909705556:AAHUMqkFFSYz6LktMXmBBmUf532DUxCro44"
+# Bot-Konfiguration: jetzt aus Env Var lesen
+BOT_TOKEN = os.environ.get("TELEGRAM_TOKEN")
+if not BOT_TOKEN:
+    logger.error("TELEGRAM_TOKEN environment variable is not set!")
+
 VIP_LINK = "https://www.checkout-ds24.com/redir/613899/Sven1703/"
-WEBHOOK_URL = "https://gymmodeon-1.onrender.com"
+WEBHOOK_URL = os.environ.get("WEBHOOK_URL", "https://gymmodeon-1.onrender.com")  # besser via Env Var setzen
 
 def send_telegram_message(chat_id, text):
     try:
@@ -51,9 +52,10 @@ def get_webhook_info():
         logger.error(f"Error getting webhook info: {e}")
         return None
 
+# Vereinfachte Index-Route, kein Template mehr
 @app.route('/')
 def index():
-    return render_template('index.html', bot_token_set=True)
+    return jsonify({"message": "Telegram VIP Bot is running!"})
 
 @app.route('/health', methods=['GET'])
 def health_check():
@@ -129,4 +131,4 @@ def webhook_info():
 
 if __name__ == '__main__':
     logger.info("Starting Telegram VIP Bot")
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000)
