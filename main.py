@@ -58,11 +58,17 @@ if __name__ == "__main__":
     async def start_bot():
         await application.initialize()
         # Webhook setzen
-        webhook_url = "https://gymmodeon.onrender.com/webhook"
-await application.bot.set_webhook(webhook_url)
-await application.start()
-print(f"✅ Webhook gesetzt auf: {webhook_url}")
+        # ✅ App starten (FastAPI + Telegram Webhook)
+if __name__ == "__main__":
+    import asyncio
 
+    async def start_bot():
+        await application.initialize()
+        # Webhook setzen
+        webhook_url = "https://gymmodeon.onrender.com/webhook"
+        await application.bot.set_webhook(webhook_url)
+        await application.start()
+        print(f"✅ Webhook gesetzt auf: {webhook_url}")
 
     async def shutdown_bot():
         await application.stop()
@@ -75,4 +81,5 @@ print(f"✅ Webhook gesetzt auf: {webhook_url}")
         await server.serve()
         await shutdown_bot()
 
-    asyncio.run(main())
+    asyncio.run(main())  # <--- WICHTIG! Damit main() auch ausgeführt wird
+
