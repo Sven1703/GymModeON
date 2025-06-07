@@ -11,6 +11,10 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", "fallback_secret_key")
 
+# Debug-Modus explizit aus
+app.debug = False
+
+
 # Bot-Konfiguration: jetzt aus Env Var lesen
 BOT_TOKEN = os.environ.get("TELEGRAM_TOKEN")
 if not BOT_TOKEN:
