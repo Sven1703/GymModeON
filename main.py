@@ -1,6 +1,6 @@
 import os
 import uvicorn
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI, Request
 from telegram import Update
 from telegram.ext import (
     ApplicationBuilder,
@@ -43,13 +43,10 @@ application.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle
 
 # ✅ Telegram Webhook-Route
 @app.post("/webhook")
-@app.post("/webhook")
 async def telegram_webhook(req: Request):
-    update = Update.model_validate(await req.json(), context={"bot": bot})
+    update = Update.model_validate(await req.json(), context={"bot": application.bot})
     await application.update_queue.put(update)
     return "ok"
-
-
 
 # ✅ App starten (FastAPI + Telegram Webhook)
 if __name__ == "__main__":
@@ -57,14 +54,6 @@ if __name__ == "__main__":
 
     async def start_bot():
         await application.initialize()
-        # Webhook setzen
-        # ✅ App starten (FastAPI + Telegram Webhook)
-if __name__ == "__main__":
-    import asyncio
-
-    async def start_bot():
-        await application.initialize()
-        # Webhook setzen
         webhook_url = "https://gymmodeon.onrender.com/webhook"
         await application.bot.set_webhook(webhook_url)
         await application.start()
@@ -81,5 +70,4 @@ if __name__ == "__main__":
         await server.serve()
         await shutdown_bot()
 
-    asyncio.run(main())  # <--- WICHTIG! Damit main() auch ausgeführt wird
-
+    asyncio.run(main())
