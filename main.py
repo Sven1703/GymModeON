@@ -35,10 +35,17 @@ application.add_handler(CommandHandler("start", start))
 application.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message))
 
 @app.post("/webhook")
+@app.post("/webhook")
 async def telegram_webhook(req: Request):
-    update = Update.model_validate(await req.json(), context={"bot": application.bot})
-    await application.update_queue.put(update)
-    return "ok"
+    try:
+        update = Update.model_validate(await req.json(), context={"bot": application.bot})
+        await application.update_queue.put(update)
+        return {"status": "ok"}
+    except Exception as e:
+        import traceback
+        traceback.print_exc()  # Fehler stack trace in die Logs schreiben
+        return {"error": str(e)}
+
 
 if __name__ == "__main__":
     import asyncio
