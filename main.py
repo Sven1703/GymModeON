@@ -44,8 +44,9 @@ if __name__ == "__main__":
     import asyncio
 
     async def start_bot():
+        print("🔄 start_bot() wird ausgeführt - initialisiere Bot...")
         await application.initialize()
-        webhook_url = "https://gymmodeon.onrender.com/webhook"  # Ersetze mit deiner Render-URL!
+        webhook_url = "https://gymmodeon-1.onrender.com"  # Ersetze mit deiner Render-URL!
         await application.bot.set_webhook(webhook_url)
         await application.start()
         print(f"✅ Webhook gesetzt auf: {webhook_url}")
