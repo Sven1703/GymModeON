@@ -43,12 +43,12 @@ application.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle
 
 # ✅ Telegram Webhook-Route
 @app.post("/webhook")
-async def telegram_webhook(request: Request):
-    json_update = await request.json()
-    print("📩 Update eingegangen:", json_update)  # <-- Hier Log-Ausgabe hinzufügen
-    update = Update.de_json(json_update, application.bot)
+@app.post("/webhook")
+async def telegram_webhook(req: Request):
+    update = Update.model_validate(await req.json(), context={"bot": bot})
     await application.update_queue.put(update)
-    return Response(status_code=200)
+    return "ok"
+
 
 
 # ✅ App starten (FastAPI + Telegram Webhook)
