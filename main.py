@@ -58,11 +58,11 @@ if __name__ == "__main__":
     async def start_bot():
         await application.initialize()
         # Webhook setzen
- webhook_url = "https://gymmodeon.onrender.com/webhook"
- ("RENDER_EXTERNAL_URL", "https://gymmodeon.onrender.com") + "/webhook"
-        await application.bot.set_webhook(webhook_url)
-        await application.start()
-        print(f"✅ Webhook gesetzt auf: {webhook_url}")
+        webhook_url = "https://gymmodeon.onrender.com/webhook"
+await application.bot.set_webhook(webhook_url)
+await application.start()
+print(f"✅ Webhook gesetzt auf: {webhook_url}")
+
 
     async def shutdown_bot():
         await application.stop()
