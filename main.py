@@ -58,7 +58,8 @@ if __name__ == "__main__":
     async def start_bot():
         await application.initialize()
         # Webhook setzen
-        webhook_url = os.environ.get("RENDER_EXTERNAL_URL", "https://gymmodeon.onrender.com") + "/webhook"
+ webhook_url = "https://gymmodeon.onrender.com/webhook"
+ ("RENDER_EXTERNAL_URL", "https://gymmodeon.onrender.com") + "/webhook"
         await application.bot.set_webhook(webhook_url)
         await application.start()
         print(f"✅ Webhook gesetzt auf: {webhook_url}")
